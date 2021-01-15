@@ -22,29 +22,32 @@
     <h2>Reserve class room</h2>
     <div class="form-group row">
     <label  class="col-sm-2 col-form-label">Class</label>
-    <input type="text" id="class" name="room">
+    <input class="col-sm-2" type="text" id="class" name="room">
     </div>
 
     <div class="form-group row">
     <label class="col-sm-2 col-form-label" for="date">Date:</label>
-    <input type="date" id="date" name="reservation">
+    <input class="col-sm-2" type="date" id="date" name="reservation">
     </div>
 
     <div class="form-group row">
     <label class="col-sm-2 col-form-label">Start time</label>
-    <input type="time" id="time" name="hour" value="08:00" ><br>
+    <input class="col-sm-2" type="number" id="time" name="hour" value="8" min="0" max="24" ><br>
+    </div>
+
+    <div class="form-group row">
     <label class="col-sm-2 col-form-label">How many hours</label>
-    <input type="number" id="duration" name="duration" min="1"><br>
+    <input class="col-sm-2" type="number" id="duration" name="duration" min="1" max="10"><br>
     </div>
     <div class="form-group row">
     <label class="col-sm-2 col-form-label">User</label>
-    <input type="text" id="user" name="user">
+    <input class="col-sm-2" type="text" id="user" name="user">
     </div>
     <button type="submit" form="f1" class="btn btn-primary mb-2" value="Submit">Submit</button>
 </form>
 
 <h2>Search reservations</h2>
-<p>When you search reservations, leave the input empty if you don't use the option. You can use 0-3 search categories. 0 categories shows all reservations</p>
+<p>When you search reservations, leave the input empty if you don't use the option. You can use 0-3 search categories. 0 categories (all empty) shows all reservations</p>
 <form action="/reservation/" method="get" >
 <div class="form-group row">
 <label class="col-sm-2 col-form-label">Class</label>
