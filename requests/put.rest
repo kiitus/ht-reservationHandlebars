@@ -1,0 +1,11 @@
+PUT  https://teemun.herokuapp.com/reservation/5f9322a5e22fcf00177b5e1d
+Content-Type: application/json
+
+{
+"room":"ABC",
+"year":"2020",
+"month":"10",
+"day":"23",
+"hour":8,
+"duration":"8"
+}

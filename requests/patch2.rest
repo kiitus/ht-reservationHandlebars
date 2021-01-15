@@ -1,0 +1,6 @@
+PATCH  https://teemun.herokuapp.com/reservation/5f931b8ae22fcf00177b5e1c
+Content-Type: application/json
+
+{
+    "duration":8
+}

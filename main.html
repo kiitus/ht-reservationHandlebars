@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserve class room</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+</head>
+<body class="container bg-dark text-white">
+<h1 class="bg-dark text-white">Class reservation application</h1>
+<p>This page allows you to reserve a class room for your lessons. Aplication will check if the class is already reserved. User is not mandatory</p>
+<form action="/reservation/" method="post" id="f1">
+    <h2>Reserve class room</h2>
+    <div class="form-group row">
+    <label  class="col-sm-2 col-form-label">Class</label>
+    <input type="text" id="class" name="room">
+    </div>
+
+    <div class="form-group row">
+    <label class="col-sm-2 col-form-label" for="date">Date:</label>
+    <input type="date" id="date" name="reservation">
+    </div>
+
+    <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Start time</label>
+    <input type="time" id="time" name="hour" value="08:00" ><br>
+    <label class="col-sm-2 col-form-label">How many hours</label>
+    <input type="number" id="duration" name="duration" min="0"><br>
+    </div>
+    <div class="form-group row">
+    <label class="col-sm-2 col-form-label">User</label>
+    <input type="text" id="user" name="user">
+    </div>
+    <button type="submit" form="f1" class="btn btn-primary mb-2" value="Submit">Submit</button>
+</form>
+
+<h2>Search reservations</h2>
+<p>When you search reservations, leave the input empty if you don't use the option. You can use 0-3 search categories. 0 categories shows all reservations</p>
+<form action="/reservation/" method="get" >
+<div class="form-group row">
+<label class="col-sm-2 col-form-label">Class</label>
+<input type="text" id="class2" name="room"><br>
+ </div>
+
+<div class="form-group row">   
+<label class="col-sm-2 col-form-label">User</label>
+<input type="text" name="user"><br>
+</div>
+
+<div class="form-group row">
+<label class="col-sm-2 col-form-label">Date</label>
+<input type="date" id="date2" name="date">
+<input type="checkbox" id="searchDay" name="searchDay" value="etsi">search by date<br>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit">Search</button>
+</form>
+</body>
+<script>
+    Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+    document.getElementById('date').value = new Date().toDateInputValue();
+    document.getElementById('date2').value = new Date().toDateInputValue();
+</script>
+</html>

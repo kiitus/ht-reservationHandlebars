@@ -1,0 +1,13 @@
+input, select {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+body
+{
+    background-color: grey;
+}
+.one
+{
+    border: 1px;
+}

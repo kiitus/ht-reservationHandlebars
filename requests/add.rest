@@ -1,0 +1,13 @@
+//POST http://localhost:3000/reservation/
+POST https://teemun.herokuapp.com/reservation/
+Content-Type: application/json
+
+{
+"room":"ABC",
+"year":"2020",
+"month":10,
+"day":"23",
+"hour":10,
+"duration":4,
+"user":"Ope"
+}

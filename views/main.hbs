@@ -1,0 +1,21 @@
+<div class="container">
+<h3>{{info}}</h3>
+<br>
+{{#each reservation}}
+
+      <p>Room:{{this.room}}</p>
+      <p>StartTime:{{this.startTime}}</p>
+      <p>EndTime:{{this.endTime}}</p>
+      {{#if this.user}}
+      <p>User:{{this.user}}</p>
+      {{/if}} 
+      <form action="/reservation/delete" method="post" id="f1">
+      <input type="hidden" id="deleteId" name="deleteId" value={{this.id}}>
+      <button type="submit" form="f1" class="btn btn-primary mb-2" value="Submit">Delete</button>
+      </form>
+      <br>
+      <br>
+{{/each}}
+<br>
+<a href="/">Back to main page</a>
+</div>
