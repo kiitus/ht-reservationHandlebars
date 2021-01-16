@@ -38,7 +38,7 @@ reservationRouter.post("/", (req, res) => {
 
         //Tarkistetaan onko huone varattu
         let reserved = false;
-        reserved = isReserved(startMil, endMil, finded_room)
+        reserved = isReserved(res,startMil, endMil, finded_room)
        
         if (reserved === false) {
             //luodaan uusi varaus
@@ -59,7 +59,7 @@ reservationRouter.post("/", (req, res) => {
             })
         }
         else {
-            res.render('main', {layout: 'index', info: "Room was reserved"});
+        //    res.render('main', {layout: 'index', info: "Room was reserved"});
            // return res.end("Room was reserved")
         }
     })
@@ -191,7 +191,7 @@ let convertAndGather = (resultToConvert) => {
 
 //Tarkistaa onko luokka varattu, skipillä toteutetaan
 //ettei muokattavan varauksen vanha aika vaikuta tarkastuksessa
-let isReserved = (startMil, endMil, times, skip = 0) => {
+let isReserved = (res,startMil, endMil, times, skip = 0) => {
     
     let reserved = false
 
@@ -200,20 +200,32 @@ let isReserved = (startMil, endMil, times, skip = 0) => {
         if (String(time._id) !== skip) {
             if ((time.Starttime <= startMil) && (startMil < time.Endtime)) {
                 reserved = true
+                let reservedTime = convertAndGather(time)
+                console.log(reservedTime)
+                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime + " - " +reservedTime[0].endTime});
 
-            }
+            } 
             else if ((time.Starttime < endMil) && (endMil <= time.Endtime)) {
                 reserved = true
+                let reservedTime = convertAndGather(time)
+                console.log(reservedTime)
+                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime +" - " +reservedTime[0].endTime});
 
 
             }
             else if ((startMil <= time.Starttime) && (time.Starttime < endMil)) {
                 reserved = true
+                let reservedTime = convertAndGather(time)
+                console.log(reservedTime)
+                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime +" - " +reservedTime[0].endTime});
 
 
             }
             else if ((startMil < time.Endtime) && (time.Endtime <= endMil)) {
                 reserved = true
+                let reservedTime = convertAndGather(time)
+                console.log(reservedTime)
+                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime +" - " +reservedTime[0].endTime});
 
 
             }
