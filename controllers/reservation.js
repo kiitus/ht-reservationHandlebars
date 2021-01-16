@@ -204,12 +204,12 @@ let isReserved = (res,startMil, endMil, times, skip = 0) => {
                 console.log(reservedTime)
                 res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime + " - " +reservedTime[0].endTime});
 
-            } 
+            }
             else if ((time.Starttime < endMil) && (endMil <= time.Endtime)) {
                 reserved = true
                 let reservedTime = convertAndGather(time)
                 console.log(reservedTime)
-                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime +" - " +reservedTime[0].endTime});
+                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime + " - " +reservedTime[0].endTime});
 
 
             }
@@ -217,16 +217,14 @@ let isReserved = (res,startMil, endMil, times, skip = 0) => {
                 reserved = true
                 let reservedTime = convertAndGather(time)
                 console.log(reservedTime)
-                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime +" - " +reservedTime[0].endTime});
-
+                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime + " - " +reservedTime[0].endTime});
 
             }
             else if ((startMil < time.Endtime) && (time.Endtime <= endMil)) {
                 reserved = true
                 let reservedTime = convertAndGather(time)
                 console.log(reservedTime)
-                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime +" - " +reservedTime[0].endTime});
-
+                res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime + " - " +reservedTime[0].endTime});
 
             }
         }
