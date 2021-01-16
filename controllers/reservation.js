@@ -23,7 +23,10 @@ reservationRouter.post("/", (req, res) => {
     let endMil = new Date(year, month - 1, day, hour + duration).getTime()
 
 
-
+    if(room.trim()==="")
+    {
+        return res.render("main",{layout: 'index', info: "You have to choose class"})
+    }
     //Jos syötteessä virhe
     if (isNaN(startMil) || isNaN(endMil) || (endMil < startMil)) {
         
