@@ -6,7 +6,7 @@ reservationRouter.post("/", (req, res) => {
 
     var d = new Date(req.body.reservation);
 
-    const room = req.body.room
+    const room = req.body.room.trim()
   // const year = parseInt(req.body.year)
   //  const month = parseInt(req.body.month)
   //  const day = parseInt(req.body.day)
@@ -17,7 +17,7 @@ reservationRouter.post("/", (req, res) => {
     const duration = parseInt(req.body.duration)
     const user = req.body.user
 
-
+    
     //Varatut ajat millisekunteina
     let startMil = new Date(year, month - 1, day, hour).getTime()
     let endMil = new Date(year, month - 1, day, hour + duration).getTime()
