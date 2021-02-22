@@ -8,8 +8,9 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
+<!-- jQuery library 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+-->
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -69,6 +70,7 @@
 </form>
 
 <footer class="footer">
+<p>You updated the site at <span id=loadedAt></span> </p></br>
 <p>This application is made by Teemu Hallinen. Github repo can be found <a href="https://github.com/kiitus/ht-reservationHandlebars">Here</a> </p> 
 <p>Technologies used are html, css, bootstrap, javaScript, node.js (express), mongodb (mongoose) and handlebars</p>
 </footer>
@@ -82,5 +84,6 @@
 
     document.getElementById('date').value = new Date().toDateInputValue();
     document.getElementById('date2').value = new Date().toDateInputValue();
+    document.getElementById(`loadedAt`).innerHTML = new Date()
 </script>
 </html>
