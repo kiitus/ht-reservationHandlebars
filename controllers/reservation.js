@@ -1,9 +1,11 @@
 const reservationRouter = require('express').Router()
 const time = require('../models/time')
 
-
+//Add a reservation
 reservationRouter.post("/", (req, res) => {
 
+
+    //Gets input from form
     var d = new Date(req.body.reservation);
 
     const room = req.body.room.trim()
@@ -18,29 +20,30 @@ reservationRouter.post("/", (req, res) => {
     const user = req.body.user
 
 
-    //Varatut ajat millisekunteina
+    //Reservation in milliseconds
     let startMil = new Date(year, month - 1, day, hour).getTime()
     let endMil = new Date(year, month - 1, day, hour + duration).getTime()
 
-
+    //if no class given, print error
     if (room.trim() === "") {
         return res.render("main", { layout: 'index', info: "You have to choose class" })
     }
-    //Jos syötteessä virhe
+    //Check for error in reservation
     if (isNaN(startMil) || isNaN(endMil) || (endMil < startMil)) {
 
         return res.render('main', { layout: 'index', info: "Error in reservation time" });
-        // return res.status(400).send("Error in reservation time")
+    
     }
 
+    //Gets classes previous reservations
     time.find({ Room: room }).sort({ Starttime: 1 }).then((finded_room) => {
 
-        //Tarkistetaan onko huone varattu
+        //Let's check if class is already reserved at given time
 
         let ReservedText = isReserved(startMil, endMil, finded_room)
 
         if (ReservedText.trim() === "") {
-            //luodaan uusi varaus
+            //If not already reserved, create new reservation
             const time_var = new time({
                 Room: room,
                 Starttime: startMil,
@@ -48,50 +51,52 @@ reservationRouter.post("/", (req, res) => {
                 User: user
             })
 
+            //Save the reservation
             time_var.save().then((saved_time) => {
+                //Convert millisecond to "normal" time
                 let converted = convertAndGather(saved_time)
-                console.log(converted)
+
+                //Render input using handelsbar
                 res.render('main', { layout: 'index', info: "Reservation added", reservation: converted });
-                //return res.send(converted)
+        
             }).catch((error) => {
                 res.status(400).send(error.message)
             })
         }
+        //If class was already reserved
         else {
+            //render reservation information using handelsbar
             res.render('main', { layout: 'index', info: ReservedText });
-
-            //  res.render('main', {layout: 'index', info: "Class "+reservedTime[0].room+" was reserved "+ reservedTime[0].startTime + " - " +reservedTime[0].endTime});
-
-            //    res.render('main', {layout: 'index', info: "Room was reserved"});
-            // return res.end("Room was reserved")
         }
     })
 
 })
 
 
+//Delete reservation
 reservationRouter.post("/delete", (req, res) => {
 
     const id = req.body.deleteId
 
-    console.log(id)
     time.findByIdAndDelete(id).then((deleted) => {
-        res.render('main', { layout: 'index', info: "Reservation deleted" });
-        //  res.send("Reservation deleted")
+        res.render('main', { layout: 'index', info: "Reservation deleted" }
     }).catch((error) => {
         res.status(400).send("Error in id")
     })
 })
 
+// Gets reservations whichs pass the given search criteria
 reservationRouter.get("", (req, res) => {
 
 
-    //Tähän kerätään hakuehdot
+
     let query = {};
 
 
     let room = req.query.room
 
+
+    //if search class
     if (room !== undefined && room.trim() !== "") {
         let title = "Room";
         let value = req.query.room.trim();
@@ -99,7 +104,7 @@ reservationRouter.get("", (req, res) => {
     }
 
 
-    //Päiväys pitää olla muodossa ddmmyyyy
+    //if search date
 
     let date = req.query.date
     let searchDay = req.query.searchDay
@@ -108,10 +113,7 @@ reservationRouter.get("", (req, res) => {
         const month = parseInt(req.query.date.substring(5, 7))
         const year = parseInt(req.query.date.substring(0, 4))
 
-        console.log(day)
-        console.log(month)
-        console.log(year)
-        //Näytetään yhden päivän varaukset
+        //Show one day reservation
 
         let s = new Date(year, month - 1, day)
         let e = new Date(year, month - 1, day + 1)
@@ -129,6 +131,7 @@ reservationRouter.get("", (req, res) => {
 
     }
 
+    //If search user
 
     if (req.query.user !== undefined && req.query.user.trim() != "") {
         let titleUser = "User";
@@ -136,13 +139,13 @@ reservationRouter.get("", (req, res) => {
         query[titleUser] = valueUser;
     }
 
-    console.log(query)
-
-
 
     let result = []
 
+    //Prints seach results
     time.find(query).sort({ Room: 1, Starttime: 1 }).then((finded) => {
+
+        //Convert milliseconds to "normal" time
         result = convertAndGather(finded)
         if (result.length > 0) {
             res.render('main', { layout: 'index', info: "Search results", reservation: result });
@@ -156,13 +159,13 @@ reservationRouter.get("", (req, res) => {
 
 
 
-//Muuttaa ohjelman käyttämät millisekunnit tavalliseksi ajaksi
+//Converts milliseconds to "normal" time
 let convertAndGather = (resultToConvert) => {
 
     const converted = []
 
     if (Array.isArray(resultToConvert)) {
-        //Jos array
+        //If array
         resultToConvert.forEach((time) => {
             let oneReservation = {
                 room: time.Room,
@@ -177,7 +180,7 @@ let convertAndGather = (resultToConvert) => {
 
     }
     else {
-        //Jos yksittäinen object
+        //If object
         let oneReservation = {
             room: resultToConvert.Room,
             startTime: new Date(resultToConvert.Starttime).toLocaleString(),
@@ -190,8 +193,7 @@ let convertAndGather = (resultToConvert) => {
     return converted
 }
 
-//Tarkistaa onko luokka varattu, skipillä toteutetaan
-//ettei MUOKATTAVA (ei toteutettu UI:ssä) varauksen vanha aika vaikuta tarkastuksessa
+//Functio that checks if class is already reserved at given time
 let isReserved = (startMil, endMil, times, skip = 0) => {
 
     let text = ""
@@ -216,10 +218,11 @@ let isReserved = (startMil, endMil, times, skip = 0) => {
             }
         }
     })
-    console.log(text)
     return text
 }
 
+
+// Fuction after this are used to generate text to already reserved time
 let formatText = (text, time) => {
     let reservedTime = convertAndGather(time)
 
